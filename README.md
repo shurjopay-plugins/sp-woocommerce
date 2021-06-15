@@ -1,2 +1,2 @@
-# woocommerce_v2
+# Wordpress woocommerce plugin
 shurjoPay version two woocommerce plugin
