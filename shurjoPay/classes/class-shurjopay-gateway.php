@@ -454,7 +454,7 @@ if (!class_exists("WC_Shurjopay")) {
                 array(
                     // store information
                     'token' => $token['token'],
-                    'stor_id' =>$token['stor_id'],
+                    'store_id' =>$token['store_id'],
                     'prefix' => $this->transaction_prefix,                              
                     'currency' => $this->currency,
                     'return_url' => $this->return_url,
