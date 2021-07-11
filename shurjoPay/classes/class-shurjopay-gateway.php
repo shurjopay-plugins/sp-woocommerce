@@ -86,9 +86,9 @@ if (!class_exists("WC_Shurjopay")) {
             }
 
 
-            $this->token_url = $this->domainName."/api/get_token";
-            $this->payment_url = $this->domainName."/api/screate-pay";
-            $this->verification_url = $this->domainName."/api/verification/";
+            $this->token_url = $this->domainName."api/get_token";
+            $this->payment_url = $this->domainName."api/screte-pay";
+            $this->verification_url = $this->domainName."api/verification/";
 
             $this->msg['message'] = "";
             $this->msg['class'] = "";
@@ -285,13 +285,14 @@ if (!class_exists("WC_Shurjopay")) {
         {
 	    global $woocommerce; $this->msg['class'] = 'error';
             $this->msg['message'] = "Thank you for shopping with us. However, the transaction has been declined.";
+            //$this->logger("shurjoPay Response :".json_encode($_REQUEST));
             if (!isset($_REQUEST['orderid']) || empty($_REQUEST['orderid'])) {
                 $this->msg['class'] = 'error';
                 $this->msg['message'] = "Payment data not found.";
                 return $this->redirect_with_msg(false,false);
             }
             $order_id = $_REQUEST["orderid"];
-            // $this->logger("Response Order ID:".$order_id);
+            //$this->logger("Response Order ID:".$order_id);
 
             $decryptValues = json_decode($this->decrypt_and_validate($order_id));
             if ($decryptValues == false) {
@@ -330,21 +331,21 @@ if (!class_exists("WC_Shurjopay")) {
                         do_action( 'woocommerce_reduce_order_stock', $order );
                         break;
                     case "1002":
-                        $this->msg['message'] = "Transaction canceled.<br/>Bank Ref Number: '" . $data_dycrpt->bank_trx_id . "'.<br/>We will keep you posted regarding the status of your order through e-mail";
+                        $this->msg['message'] = "Your Transaction <b>Canceled</b>.<br/>Invoice ID: " . $data_dycrpt->invoice_no .".<br/>Customer Order ID: ".$data_dycrpt->customer_order_id ."<br/> Payment Method: ".$data_dycrpt->method.".<br/>We will keep you posted regarding the status of your order through e-mail";
                         $this->msg['class'] = 'error';
-                        $order->add_order_note("Transaction canceled by client.");
+                        $order->add_order_note("Transaction Canceled by client.");
                         $order->update_status('cancelled');
                         break;
                     case "1001":
                         $this->msg['class'] = 'error';
-                        $this->msg['message'] = "Transaction Failed.<br/>Bank Ref Number: '" . $data_dycrpt->bank_trx_id . "'.<br/>Thank you for shopping with us.";
+                        $this->msg['message'] = "Your Transaction <b>Canceled</b>.<br/>Invoice ID: " . $data_dycrpt->invoice_no .".<br/>Customer Order ID: ".$data_dycrpt->customer_order_id ."<br/> Payment Method: ".$data_dycrpt->method.".<br/>We will keep you posted regarding the status of your order through e-mail";
 
-                        $order->add_order_note("Transaction failed.");
+                        $order->add_order_note("Transaction Failed.");
                         $order->update_status('failed');
                         break;                                                  
                     default:
                         $this->msg['class'] = 'error';
-                        $this->msg['message'] = "Thank you for shopping with us.<br/>Bank Ref Number: '" . $data_dycrpt->bank_trx_id . "'.<br/>!!However, the transaction has been ".$data_dycrpt->sp_massage.".";
+                        $this->msg['message'] = "Thank you for shopping with us.<br/>Invoice ID: '" . $data_dycrpt->invoice_no . "'.<br/>!!However, the transaction has been ".$data_dycrpt->sp_massage.".";
                         $order->add_order_note("Bank transaction not successful.");
                         break;
                 };
@@ -422,6 +423,7 @@ if (!class_exists("WC_Shurjopay")) {
         private function get_order_from_response($data = "")
         {
 
+            // var_dump($data);exit;
             if (empty($data)) return false;
             if (!isset($data->customer_order_id)) return false;
             // $order_id = explode('|', $data->customer_order_id);
@@ -449,12 +451,16 @@ if (!class_exists("WC_Shurjopay")) {
             $token   = json_decode($this->getToken(), true);
             // Generate order id 
             $order_id = $order->get_id();//$this->transaction_prefix.$order->get_id()."|".uniqid();
+            if(!isset($token['token']) || empty($token['token']))
+            {
+                die("Error occured! Please check logs");
+            }
 
             $createpaybody= http_build_query ( 
                 array(
                     // store information
                     'token' => $token['token'],
-                    'stor_id' =>$token['stor_id'],
+                    'store_id' =>$token['store_id'],
                     'prefix' => $this->transaction_prefix,                              
                     'currency' => $this->currency,
                     'return_url' => $this->return_url,
@@ -491,7 +497,8 @@ if (!class_exists("WC_Shurjopay")) {
             );
 
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $this->payment_url);
+            $payment_url = $token['execute_url'];
+            curl_setopt($ch, CURLOPT_URL, $payment_url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $createpaybody);
@@ -499,8 +506,14 @@ if (!class_exists("WC_Shurjopay")) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             $response = curl_exec($ch);
             $urlData = json_decode($response); 
-            // $this->logger("Create Payment:".json_encode($urlData)."<br>");
+
+            //$this->logger("Create Payment:".json_encode($urlData)."<br>");
             curl_close($ch);   
+            // var_dump($urlData->url);exit;
+            if(!isset($urlData->url) || empty($urlData->url))
+            {
+                die("Error occured! Please check logs!");
+            }
             header('Location: '.$urlData->url);
         }
 
@@ -519,7 +532,7 @@ if (!class_exists("WC_Shurjopay")) {
                 'password' => $this->api_password,
             );
             // logger
-            // $this->logger($token_url.":".json_encode($postFields)."<br>");
+            //$this->logger($token_url.":".json_encode($postFields)."<br>");
             if (empty($token_url) || empty($postFields)) return null;
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $token_url);
@@ -528,7 +541,7 @@ if (!class_exists("WC_Shurjopay")) {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
             $response = curl_exec($ch);
-            // $this->logger(json_encode($response));
+            //$this->logger(json_encode($response));
             curl_close($ch);
             return $response;
 
@@ -540,7 +553,7 @@ if (!class_exists("WC_Shurjopay")) {
          */
         private function decrypt_and_validate($order_id)
         {
-            //echo $order_id;exit;
+            // echo $order_id;exit;
 
             $token   = json_decode($this->getToken(), true);
             $header=array(
@@ -549,11 +562,11 @@ if (!class_exists("WC_Shurjopay")) {
             );
             $postFields = http_build_query (
                     array(
-                        'orderid' => $order_id
+                        'order_id' => $order_id
                     )
             );
             $verification_url = $this->domainName.'/api/verification';
-            // $this->logger($verification_url."\n");
+            //$this->logger(json_encode($postFields)."\n");
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL,  $verification_url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -567,7 +580,7 @@ if (!class_exists("WC_Shurjopay")) {
                 echo 'Curl error: ' . curl_error($ch);
             }
             curl_close($ch);   
-            // $this->logger("Verification_response:".json_encode($response)."<br>");
+            //$this->logger("Verification_response:".json_encode($response)."<br>");
             return json_encode($response);
         }
 
