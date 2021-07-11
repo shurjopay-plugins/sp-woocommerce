@@ -86,9 +86,11 @@ if (!class_exists("WC_Shurjopay")) {
             }
 
 
+
             $this->token_url = $this->domainName."api/get_token";
             $this->payment_url = $this->domainName."api/screte-pay";
             $this->verification_url = $this->domainName."api/verification/";
+
 
             $this->msg['message'] = "";
             $this->msg['class'] = "";
