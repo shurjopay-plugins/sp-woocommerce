@@ -100,6 +100,7 @@ if (!class_exists("WC_Shurjopay")) {
                 //IPN actions
                 $this->notify_url = str_replace('https:', 'http:', home_url('/wc-api/WC_Shurjopay'));
                 add_action('woocommerce_api_wc_shurjopay', array($this, 'check_shurjopay_response'));
+                add_action('woocommerce_ipn_wc_shurjopay', array($this, 'shurjopay_ipn_response'));
                 add_action('valid-shurjopay-request', array($this, 'successful_request'));
             } else {
                 $this->enabled = 'no';
@@ -182,6 +183,13 @@ if (!class_exists("WC_Shurjopay")) {
                     ),
                     'default' => 'wc-completed',
                 ),
+                'ipn' => array(
+                    'title' => __('IPN', 'shurjopay'),
+                    'type' => 'text',
+                    'description' => __('Instant Payment Notification URL .', 'shurjopay'),
+                    'default' => 'no',
+                    'desc_tip' => __('Instant Payment Notification IPN will get response from shurjoPay just after any pament done.', 'shurjopay'),
+                ),  
                 'environment' => array(
                     'title' => __('Test Mode', 'shurjopay'),
                     'label' => __('Enable Test Mode', 'shurjopay'),
@@ -321,6 +329,16 @@ if (!class_exists("WC_Shurjopay")) {
             }
             // update in database
             $this->update_transaction($data_dycrpt->customer_order_id,$data_dycrpt->sp_massage,$data_dycrpt->bank_trx_id,$data_dycrpt->method);
+            // var_dump($data_dycrpt);exit;
+
+            $order_status_sp_msg = "Payment Status = {$data_dycrpt->sp_massage}<br/>
+                                    Bank trx id = {$data_dycrpt->bank_trx_id}<br/>
+                                    Invoice id = {$data_dycrpt->invoice_no}<br/>
+                                    Your order id = {$data_dycrpt->customer_order_id}<br/>
+                                    Payment Date = {$data_dycrpt->sp_code}<br/>
+                                    Card Number = {$data_dycrpt->card_number}<br/>
+                                    Card Type = {$data_dycrpt->method}<br/>
+                                    Payment Gateway = shurjoPay";
 
             try {
                 switch (strtolower($data_dycrpt->sp_code)) 
@@ -329,21 +347,24 @@ if (!class_exists("WC_Shurjopay")) {
                         $this->msg['message'] = "Thank you for shopping with us. Your account has been charged and your transaction is successful. We will be shipping your order to you soon.";
                         $this->msg['class'] = 'success';
                         $woocommerce->cart->empty_cart();
-                        $order->add_order_note("ShurjoPay payment successful.<br/> Bank Ref Number: " . $data_dycrpt->bank_trx_id);
+
+                        $order->add_order_note($order_status_sp_msg);
+                        // $order->add_order_note("ShurjoPay payment successful.<br/> Bank Ref Number: " . $data_dycrpt->bank_trx_id);
                         $order->update_status($this->after_payment_status, $this->order_status_messege[$this->after_payment_status]);
                         do_action( 'woocommerce_reduce_order_stock', $order );
                         break;
                     case "1002":
                         $this->msg['message'] = "Your Transaction <b>Canceled</b>.<br/>Invoice ID: " . $data_dycrpt->invoice_no .".<br/>Customer Order ID: ".$data_dycrpt->customer_order_id ."<br/> Payment Method: ".$data_dycrpt->method.".<br/>We will keep you posted regarding the status of your order through e-mail";
                         $this->msg['class'] = 'error';
-                        $order->add_order_note("Transaction Canceled by client.");
+                        $order->add_order_note($order_status_sp_msg);
+                        // $order->add_order_note("Transaction Canceled by client.");
                         $order->update_status('cancelled');
                         break;
                     case "1001":
                         $this->msg['class'] = 'error';
                         $this->msg['message'] = "Your Transaction <b>Canceled</b>.<br/>Invoice ID: " . $data_dycrpt->invoice_no .".<br/>Customer Order ID: ".$data_dycrpt->customer_order_id ."<br/> Payment Method: ".$data_dycrpt->method.".<br/>We will keep you posted regarding the status of your order through e-mail";
-
-                        $order->add_order_note("Transaction Failed.");
+                        $order->add_order_note($order_status_sp_msg);
+                        // $order->add_order_note("Transaction Failed.");
                         $order->update_status('failed');
                         break;                                                  
                     default:
@@ -361,6 +382,13 @@ if (!class_exists("WC_Shurjopay")) {
             return $this->redirect_with_msg($order, $data_dycrpt->sp_massage);
         }
 
+        /**
+         * Get response from shurjopay IPN.
+        */
+        public function shurjopay_ipn_response()
+        {
+            echo "IPN FUNCTION!";
+        }
         /**
          * From payment status it redirects to relivent page to customer.
          * @param $order,$bankTxStatus
