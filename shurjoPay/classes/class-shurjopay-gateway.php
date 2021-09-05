@@ -33,7 +33,7 @@ if (!class_exists("WC_Shurjopay")) {
             "wc-failed" => "Order Failed",
             "wc-refunded" => "Payment Refunded."
         );
-        private $sanbox_url = 'https://engine.shurjopayment.com/';
+        private $sanbox_url = 'https://sandbox.shurjopayment.com/';
         private $live_url = 'https://engine.shurjopayment.com/';        
         private $transaction_prefix = "";
         private $currency = "";
@@ -90,7 +90,7 @@ if (!class_exists("WC_Shurjopay")) {
 
 
             $this->token_url = $this->domainName."api/get_token";
-            $this->payment_url = $this->domainName."api/screte-pay";
+            $this->payment_url = $this->domainName."api/secret-pay";
             $this->verification_url = $this->domainName."api/verification/";
 
             $this->msg['message'] = "";
@@ -205,7 +205,7 @@ if (!class_exists("WC_Shurjopay")) {
          */
         public function is_valid_for_use()
         {
-            return in_array(get_woocommerce_currency(), array('BDT'), true);
+            return in_array(get_woocommerce_currency(), array('BDT','USD'), true);
         }
 
         public function get_store_currencies()
@@ -500,12 +500,12 @@ if (!class_exists("WC_Shurjopay")) {
                     // Order information
                     'order_id' => $order_id,
                     'discsount_amount' => 0,
-                    'disc_percent' => 0,
+                    //'disc_percent' => 5,
                     // Customer information
                     'client_ip' => $this->get_option('api_ip', $_SERVER['REMOTE_ADDR']),                
                     'customer_name' => $order_data['billing']['first_name']." ".$order_data['billing']['last_name'],
                     'customer_phone' => $order_data['billing']['phone'],
-                    'email' => $order_data['billing']['email'],
+                    'customer_email' => $order_data['billing']['email'],
                     'customer_address' => $order_data['billing']['address_1']." ".$order_data['billing']['address_1'],                
                     'customer_city' => $order_data['billing']['city'],
                     'customer_state' => $order_data['billing']['state'],
