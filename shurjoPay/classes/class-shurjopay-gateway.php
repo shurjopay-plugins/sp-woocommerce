@@ -728,6 +728,7 @@ if (!class_exists("WC_Shurjopay")) {
          */
         public function logger($logmsg)
         {
+		/*
             try 
             {
                 $logmsg = "\n\n".date("Y.n.j H:i:s")."#".$logmsg."\n\n";
@@ -735,6 +736,7 @@ if (!class_exists("WC_Shurjopay")) {
             } catch(Exception $e) {
                 file_put_contents('/var/www/html/wordpress/wp-content/plugins/shurjoPay/classes/log/'.date("Y.n.j").'.log',$e->getMessage(),FILE_APPEND);
             }
+		*/
         }
     }
 }
