@@ -296,7 +296,7 @@ if (!class_exists("WC_Shurjopay")) {
         {
 	    global $woocommerce; $this->msg['class'] = 'error';
             $this->msg['message'] = "Thank you for shopping with us. However, the transaction has been declined.";
-            $this->logger("shurjoPay Response :".json_encode($_REQUEST));
+            //$this->logger("shurjoPay Response :".json_encode($_REQUEST));
             if (!isset($_REQUEST['order_id']) || empty($_REQUEST['order_id'])) {
                 $this->msg['class'] = 'error';
                 $this->msg['message'] = "Payment data not found.";
@@ -538,7 +538,7 @@ if (!class_exists("WC_Shurjopay")) {
             $response = curl_exec($ch);
             $urlData = json_decode($response); 
 
-            $this->logger("Create Payment:".json_encode($urlData)."<br>");
+            //$this->logger("Create Payment:".json_encode($urlData)."<br>");
             curl_close($ch);   
             if(!isset($urlData->checkout_url) || empty($urlData->checkout_url))
             {
@@ -562,7 +562,7 @@ if (!class_exists("WC_Shurjopay")) {
                 'password' => $this->api_password,
             );
             // logger
-            $this->logger($token_url.":".json_encode($postFields)."<br>");
+            //$this->logger($token_url.":".json_encode($postFields)."<br>");
             if (empty($token_url) || empty($postFields)) return null;
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $token_url);
@@ -596,7 +596,7 @@ if (!class_exists("WC_Shurjopay")) {
                     )
             );
             $verification_url = $this->domainName.'/api/verification';
-            $this->logger(json_encode($postFields)."\n");
+            //$this->logger(json_encode($postFields)."\n");
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL,  $verification_url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -610,7 +610,7 @@ if (!class_exists("WC_Shurjopay")) {
                 echo 'Curl error: ' . curl_error($ch);
             }
             curl_close($ch);   
-            $this->logger("Verification_response:".json_encode($response)."<br>");
+            //$this->logger("Verification_response:".json_encode($response)."<br>");
             return json_encode($response);
         }
 
