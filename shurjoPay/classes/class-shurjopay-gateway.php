@@ -587,15 +587,15 @@ if (!class_exists("WC_Shurjopay")) {
 
             $token   = json_decode($this->getToken(), true);
             $header=array(
-                'Content-Type:application/x-www-form-urlencoded',
+                'Content-Type:application/json',
                 'Authorization: Bearer '.$token['token']    
             );
-            $postFields = http_build_query (
+            $postFields = json_encode (
                     array(
                         'order_id' => $order_id
                     )
             );
-            $verification_url = $this->domainName.'/api/verification';
+            $verification_url = $this->domainName.'api/verification';
             //$this->logger(json_encode($postFields)."\n");
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL,  $verification_url);
