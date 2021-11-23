@@ -418,12 +418,12 @@ if (!class_exists("WC_Shurjopay")) {
             {
                 if($order->status == 'completed' || ( strtolower($bankTxStatus) == 'Successful') )
                 {
-                    $redirect = $order->get_checkout_order_received_url(). $order->get_order_key() . '&order_id=' . $order->get_id();
+                    $redirect = $order->get_checkout_order_received_url();//. $order->get_order_key() . '&order_id=' . $order->get_id();
                 }
 
                 if($order->status == 'processing' || ( strtolower($bankTxStatus) == 'Successful') )
                 {
-                    $redirect = $order->get_checkout_order_received_url(). $order->get_order_key() . '&order_id=' . $order->get_id();
+                    $redirect = $order->get_checkout_order_received_url();//. $order->get_order_key() . '&order_id=' . $order->get_id();
 
                 }
                 elseif($order->status == 'cancelled')
