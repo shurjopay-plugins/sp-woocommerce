@@ -26,6 +26,13 @@ Step 3:
     i) After Successful Payment Order Status = Set to processing
     i) Test Mode = Enable for sandbox
     
-    ![step3](https://user-images.githubusercontent.com/75045980/151933264-3c2c3409-2e25-4eea-8c77-9a8f29eaaeeb.png)
-    ![step2](https://user-images.githubusercontent.com/75045980/151933268-85653ae9-3f82-491e-9850-295c962a8bc3.png)
-    ![step1](https://user-images.githubusercontent.com/75045980/151933270-89c85130-b936-463d-a69c-0be273013b8c.png)
+    Setting in background:
+    
+![step1](https://user-images.githubusercontent.com/75045980/151934163-8e9bc835-1ecc-47fc-8062-a4fb79023f14.png)
+![step2](https://user-images.githubusercontent.com/75045980/151934204-4da20029-d9b4-4c59-890d-938bea02eb75.png)
+![step3](https://user-images.githubusercontent.com/75045980/151934214-8f16042e-829c-4f17-9fe8-29be07556b74.png)
+
+
+    
+   
+   
