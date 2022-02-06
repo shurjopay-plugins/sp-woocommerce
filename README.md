@@ -2,15 +2,36 @@
 shurjoPay version two woocommerce plugin
 # Plugin configuration
 
+
 Step 1: 
 
-	Go to WooCommerce-> Settings->Payments
+	Go to: https://github.com/shurjoPay-Plugins/woocommerce
+	Download the zip and extract it.
+	
+<img src="https://user-images.githubusercontent.com/57352037/152670818-418bb5a2-e62c-4180-8579-dcd55f19b4a8.png" width="400">
+
+	
+	Now, enter into the woocommerce-main directory and select the shurjoPay folder and zip it.
+	Go to: http://<YOUR-DOMAIN-NAME>/wp-admin/about.php
+	Select -> Plugins -> Add new
+	
+<img src="https://user-images.githubusercontent.com/57352037/152670374-53b79162-f7bd-4487-9a9e-bd4a0bbe1512.png" width="350">
+
+	Now, Press -> Upload Plugin -> Choose File -> Select the shurjoPay.zip from your local directory -> Install Now.
+	
+<img src="https://user-images.githubusercontent.com/57352037/152670440-6defcbea-822a-4ef6-906f-32bfe0e23b29.png" width="650">
+
+	
   
 Step 2: 
 
+	Go to WooCommerce-> Settings->Payments
+  
+Step 3: 
+
   Select Shurjopay set credentials.
 
-Step 3:
+Step 4:
 
 
      Fill the credentials as defined below:
@@ -18,13 +39,13 @@ Step 3:
     a) Enable / Disable = set it enable
     b) Title = "Shurjopay"
     c) Description = "Pay securely using ShurjoPay"
-    d) Merchant User Name = <--Merchant name will be provided by shurjoPay! -->
-    e) Merchant IP  = <--- IP of the hosting domain -->
-    f) Merchant Return Url = "<---Domain.com-->/wc-api/WC_Shurjopay"
-    g) Merchant Password = Provided by shurjopay
-    h) Api unique id = Provided by shurjopay
-    i) After Successful Payment Order Status = Set to processing
-    i) Test Mode = Enable for sandbox
+    d) API Username = <--Merchant name will be provided by shurjoPay! -->
+    e) API Password = Provided by shurjopay
+    f) Transaction Prefix = Provided by shurjopay
+    g) Payment Currency = Set to your preferred currency
+    h) Payment Status = Processing
+    i) IPN = no
+    j) Test Mode = Enable for sandbox
     
     Setting in back panel:
     
