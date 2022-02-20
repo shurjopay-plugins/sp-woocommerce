@@ -2,6 +2,14 @@
 shurjoPay version two woocommerce plugin
 # Plugin configuration
 
+Disclaimer:
+	
+	If you are migrating from shurjoPay woocommerce plugin version one to a higher version, then you need to extend the checkout page fields.
+	The current version requires to must have additional fields unlike the previous version. Such as:
+<img src="https://user-images.githubusercontent.com/57352037/154837063-e040923e-ee1b-4c43-abed-7e1f0db37bf6.png" width="200">
+
+
+<b>Steps for sandbox (test_server) integration:</b>
 
 Step 1: 
 
@@ -25,16 +33,16 @@ Step 1:
   
 Step 2: 
 
-	Go to WooCommerce-> Settings->Payments
+	Go to WooCommerce-> Settings-> Payments
+<img src="https://user-images.githubusercontent.com/57352037/154837387-534f02c7-a67c-47a3-964e-8586bcc301d3.png" width = "280">
   
-Step 3: 
+	Select Shurjopay -> Manage.
+<img src="https://user-images.githubusercontent.com/57352037/154837615-7bd82dbe-c6ff-40df-820e-cd82aee6f63f.png" width = "450">
+	
 
-  Select Shurjopay set credentials.
+Step 3:
 
-Step 4:
-
-
-     Fill the credentials as defined below:
+    Fill the credentials as defined below:
 
     a) Enable / Disable = set it enable
     b) Title = "Shurjopay"
@@ -48,12 +56,5 @@ Step 4:
     j) Test Mode = Enable for sandbox
     
     Setting in back panel:
-    
-![step1](https://user-images.githubusercontent.com/75045980/151934163-8e9bc835-1ecc-47fc-8062-a4fb79023f14.png)
-![step2](https://user-images.githubusercontent.com/75045980/151934204-4da20029-d9b4-4c59-890d-938bea02eb75.png)
-![step3](https://user-images.githubusercontent.com/75045980/151934214-8f16042e-829c-4f17-9fe8-29be07556b74.png)
+<img src="https://user-images.githubusercontent.com/57352037/154837279-dc487621-ef38-4baf-b8c8-d93806f0e154.png" width="350">
 
-
-    
-   
-   
