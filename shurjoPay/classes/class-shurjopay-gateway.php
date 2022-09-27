@@ -329,7 +329,6 @@ if (!class_exists("WC_Shurjopay")) {
             }
             // update in database
             $this->update_transaction($data_dycrpt->customer_order_id,$data_dycrpt->sp_massage,$data_dycrpt->bank_trx_id,$data_dycrpt->method);
-            // var_dump($data_dycrpt);exit;
 
             $order_status_sp_msg = "Payment Status = {$data_dycrpt->sp_massage}<br/>
                                     Bank trx id = {$data_dycrpt->bank_trx_id}<br/>
@@ -416,14 +415,10 @@ if (!class_exists("WC_Shurjopay")) {
 
             if ($order) 
             {
-                if($order->status == 'completed' || ( strtolower($bankTxStatus) == 'Successful') )
-                {
-                    $redirect = $order->get_checkout_order_received_url();//. $order->get_order_key() . '&order_id=' . $order->get_id();
-                }
 
-                if($order->status == 'processing' || ( strtolower($bankTxStatus) == 'Successful') )
+                if( ( strtolower($order->status) == 'completed' ) || ( strtolower($order->status) == 'processing' ) || ( strtolower($bankTxStatus) == 'successful') )
                 {
-                    $redirect = $order->get_checkout_order_received_url();//. $order->get_order_key() . '&order_id=' . $order->get_id();
+                    $redirect = $order->get_checkout_order_received_url();
 
                 }
                 elseif($order->status == 'cancelled')
