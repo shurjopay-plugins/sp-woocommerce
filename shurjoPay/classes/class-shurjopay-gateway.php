@@ -481,7 +481,9 @@ if (!class_exists("WC_Shurjopay")) {
             {
                 die("Error occured! Please check logs");
             }
-
+		
+	    $first_name = !empty($order_data['billing']['first_name'])?$order_data['billing']['first_name']:'N/A';	
+	    $last_name  = !empty($order_data['billing']['last_name'])?$order_data['billing']['last_name']:'N/A';
             $createpaybody= http_build_query ( 
                 array(
                     // store information
@@ -498,14 +500,14 @@ if (!class_exists("WC_Shurjopay")) {
                     //'disc_percent' => 5,
                     // Customer information
                     'client_ip' => $this->get_option('api_ip', $_SERVER['REMOTE_ADDR']),                
-                    'customer_name' => $order_data['billing']['first_name']." ".$order_data['billing']['last_name'],
-                    'customer_phone' => $order_data['billing']['phone'],
-                    'customer_email' => $order_data['billing']['email'],
-                    'customer_address' => $order_data['billing']['address_1']." ".$order_data['billing']['address_1'],                
-                    'customer_city' => $order_data['billing']['city'],
-                    'customer_state' => $order_data['billing']['state'],
-                    'customer_postcode' => $order_data['billing']['postcode'],
-                    'customer_country' => $order_data['billing']['country']
+                    'customer_name' => $first_name." ".$last_name,
+                    'customer_phone' => !empty($order_data['billing']['phone'])?$order_data['billing']['phone']:'N/A',
+                    'customer_email' => !empty($order_data['billing']['email'])?$order_data['billing']['email']:'N/A',
+                    'customer_address' => !empty($order_data['billing']['address_1'])?$order_data['billing']['address_1']:'N/A',                
+                    'customer_city' => !empty($order_data['billing']['city'])?$order_data['billing']['city']:'N/A',
+                    'customer_state' => !empty($order_data['billing']['state'])?$order_data['billing']['state']:'N/A',
+                    'customer_postcode' => !empty($order_data['billing']['postcode'])?$order_data['billing']['postcode']:'N/A',
+                    'customer_country' => !empty($order_data['billing']['country'])?$order_data['billing']['country']:'N/A'
 
                 )
             );
