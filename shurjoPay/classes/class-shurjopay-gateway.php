@@ -194,7 +194,6 @@
                             Payment Gateway = shurjoPay";
 
                 try {
-                    return ($data_dycrpt);
                     switch (strtolower($data_dycrpt->sp_code)) {
 
                         case "1000": // Successful Payment
