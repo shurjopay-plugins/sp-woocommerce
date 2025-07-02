@@ -626,8 +626,8 @@
                                         // Customer information
                                         'client_ip'         => $this->get_option('api_ip', $_SERVER['REMOTE_ADDR']),
                                         'customer_name'     => $first_name . " " . $last_name,
-                                        'customer_phone'    => ! empty($order_data['billing']['phone']) ? $order_data['billing']['phone'] : 'N/A',
-                                        'customer_email'    => ! empty($order_data['billing']['email']) ? $order_data['billing']['email'] : 'N/A',
+                                        'customer_phone'    => ! empty($order_data['billing']['phone']) ? $order_data['billing']['phone'] : '',
+                                        'customer_email'    => ! empty($order_data['billing']['email']) ? $order_data['billing']['email'] : '',
                                         'customer_address'  => ! empty($order_data['billing']['address_1']) ? $order_data['billing']['address_1'] : 'N/A',
                                         'customer_city'     => ! empty($order_data['billing']['city']) ? $order_data['billing']['city'] : 'N/A',
                                         'customer_state'    => ! empty($order_data['billing']['state']) ? $order_data['billing']['state'] : 'N/A',
